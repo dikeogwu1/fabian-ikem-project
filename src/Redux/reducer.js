@@ -1,7 +1,9 @@
+import { ADD_ALL_CATEGORIES } from './action'
+
 const reducer = (state, action) => {
   switch (action.type) {
-    case 'GET_DATA':
-      return { ...state, data: action.payload }
+    case ADD_ALL_CATEGORIES:
+      return { ...state, categories: action.payload.categories }
 
     default:
       return state

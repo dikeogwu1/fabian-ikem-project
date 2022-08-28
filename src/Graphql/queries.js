@@ -1,6 +1,6 @@
 import { gql } from 'graphql-request'
 
-const QUERY = {
+const QUERYS = {
   // **** Query category names for navbar *****
   CATEGORIES_NAMES: gql`
     {
@@ -12,7 +12,7 @@ const QUERY = {
   // **** Query for all categories *****
   ALL_CATEGORIES: gql`
     {
-      category {
+      categories {
         name
         products {
           id
@@ -21,6 +21,10 @@ const QUERY = {
           inStock
           prices {
             amount
+            currency {
+              label
+              symbol
+            }
           }
           attributes {
             name
@@ -32,4 +36,4 @@ const QUERY = {
     }
   `,
 }
-export default QUERY
+export default QUERYS

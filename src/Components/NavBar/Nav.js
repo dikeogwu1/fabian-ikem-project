@@ -4,19 +4,22 @@ import QUERY from '../../Graphql/queries'
 import { NavLink } from 'react-router-dom'
 import icons from '../../Svg-icons/icons'
 import './nav.css'
+import InCart from './InCart'
 
 class Nav extends Component {
   constructor(props) {
     super(props)
+    this.state = {
+      categoryNames: [],
+      isLinksOpen: false,
+      isSwitcherOpen: false,
+    }
 
-    this.state = { allCategoreis: [], isLinksOpen: false }
     this.getCategoryNames = async (query) => {
       try {
         const response = await request('http://localhost:4000/', query)
         const data = await response
-        if (data.categories) {
-          this.setState({ ...this.state, allCategoreis: data.categories })
-        }
+        this.setState({ ...this.state, categoryNames: data.categories })
       } catch (error) {
         console.log(error)
       }
@@ -30,14 +33,22 @@ class Nav extends Component {
       this.setState({ ...this.state, isLinksOpen: true })
     }
   }
+  // toggle currency switcher
+  toggleSitcher = () => {
+    if (this.state.isSwitcherOpen) {
+      this.setState({ ...this.state, isSwitcherOpen: false })
+    } else {
+      this.setState({ ...this.state, isSwitcherOpen: true })
+    }
+  }
 
   componentDidMount() {
     this.getCategoryNames(QUERY.CATEGORIES_NAMES)
   }
 
   render() {
-    if (this.state.allCategoreis.length === 0) {
-      return <h4>server error encountered</h4>
+    if (this.state.categoryNames.length <= 0) {
+      return <h4>Unable to fetch data</h4>
     }
     return (
       <>
@@ -51,7 +62,7 @@ class Nav extends Component {
           <nav>
             <div className='nav-box'>
               <ul className='links-wrapper'>
-                {this.state.allCategoreis.map((category, index) => {
+                {this.state.categoryNames.map((category, index) => {
                   return (
                     <li key={index}>
                       <NavLink
@@ -64,17 +75,25 @@ class Nav extends Component {
                   )
                 })}
               </ul>
-              <div className='logo-wrapper'>
+              <NavLink className='logo-wrapper' to={'/'}>
                 <img src='./SVG/logo.svg' alt='logo' />
-              </div>
+              </NavLink>
             </div>
+            {/*currency switcher */}
             <section>
-              <div className='currency-switch-wrapper'>
+              <div
+                className='currency-switch-wrapper'
+                onClick={this.toggleSitcher}
+              >
                 <h4>$</h4>
-                {icons.chevronDown}
+                {this.state.isSwitcherOpen
+                  ? icons.chevronUp
+                  : icons.chevronDown}
               </div>
+              {/*end of currency switcher */}
               <div className='cart-wrapper'>
                 <div>{icons.cart}</div>
+                <InCart />
               </div>
               <div className='bars-wrapper' onClick={this.toggleNavBar}>
                 {icons.solidBars}

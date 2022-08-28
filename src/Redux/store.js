@@ -2,7 +2,7 @@ import { createStore } from 'redux'
 import reducer from './reducer'
 
 const initsialState = {
-  endPoint: null,
+  categories: [],
   amount: 0,
   total: 0,
 }
