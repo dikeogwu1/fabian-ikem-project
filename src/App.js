@@ -7,11 +7,16 @@ import Clothes from './Components/Categories/Clothes'
 import Tech from './Components/Categories/Tech'
 import QUERYS from './Graphql/queries'
 import queryServer from './Graphql/request'
-import { ADD_ALL_CATEGORIES } from './Redux/action'
+import { ADD_ALL_CATEGORIES, ADD_CURRENCIES } from './Redux/action'
+import store from './Redux/store'
 
 class App extends Component {
   componentDidMount() {
-    queryServer(QUERYS.ALL_CATEGORIES, ADD_ALL_CATEGORIES)
+    queryServer(QUERYS.CURRENCIES, ADD_CURRENCIES)
+    localStorage.setItem('storage', JSON.stringify(store.getState()))
+  }
+  componentDidUpdate() {
+    localStorage.setItem('storage', JSON.stringify(store.getState()))
   }
   render() {
     return (

@@ -1,11 +1,29 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { SWITCH_CURRENCY } from '../../Redux/action'
 
-export default class CurrencySwitch extends Component {
+class CurrencySwitch extends Component {
   render() {
+    const { currencies, dispatch } = this.props
     return (
-      <ul>
-        <li>$ USD</li>
+      <ul className='switcher-wrapper'>
+        {currencies.map((currency, index) => {
+          return (
+            <li
+              key={index}
+              onClick={() =>
+                dispatch({ type: SWITCH_CURRENCY, payload: index })
+              }
+            >
+              {currency.symbol} <span>{currency.label}</span>
+            </li>
+          )
+        })}
       </ul>
     )
   }
 }
+const mapStateToProps = (state) => {
+  return { currencies: state.currencies }
+}
+export default connect(mapStateToProps)(CurrencySwitch)

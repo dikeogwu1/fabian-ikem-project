@@ -1,0 +1,30 @@
+[33mcommit c4d3cbddca2d806a845de002a5af5ca0c6fdd197[m[33m ([m[1;36mHEAD -> [m[1;32mdev[m[33m)[m
+Author: dikeogwu1m <godsonhm3@gmail.com>
+Date:   Sun Aug 28 18:17:55 2022 +0100
+
+    feature: add tech, clothes and all categories
+    
+    This commit add's the three components mentioned above as higher order
+    component that returns category component.
+    
+    It also add's inCart component and currency switcher toggler to navBar
+
+[33mcommit bfc9e1b7bcec68e9359addd0ac1fcd45842c507b[m
+Author: dikeogwu1m <godsonhm3@gmail.com>
+Date:   Wed Aug 24 14:45:35 2022 +0100
+
+    feature: add navbar component and page routing
+    
+    this commit will add the navbar component, cotegories components and navbar css
+
+[33mcommit 063e200832a573cc6b37dc527b16757e674fe17b[m[33m ([m[1;31morigin/main[m[33m, [m[1;32mmain[m[33m)[m
+Author: dikeogwu1m <godsonhm3@gmail.com>
+Date:   Thu Aug 18 21:36:29 2022 +0100
+
+    fix: clean up and setting up development enviroment
+
+[33mcommit 6a08202251ae41a5f6bcc8e0ea26efa81dc8fdf0[m
+Author: dikeogwu1m <godsonhm3@gmail.com>
+Date:   Wed Feb 9 12:03:45 2022 +0100
+
+    Initialize project using Create React App

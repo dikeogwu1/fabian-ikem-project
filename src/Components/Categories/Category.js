@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import icons from '../../Svg-icons/icons'
 
 export default class Category extends Component {
   render() {
@@ -17,6 +18,9 @@ export default class Category extends Component {
         <p>
           {currencyType.currency.symbol} <span>{currencyType.amount}</span>
         </p>
+        {product.inStock && (
+          <button className='to-cart-icon'>{icons.cartSecond}</button>
+        )}
       </article>
     )
   }

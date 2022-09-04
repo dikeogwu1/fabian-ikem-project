@@ -1,0 +1,25 @@
+.overlay-container {
+  width: 100vw;
+  height: 100vh;
+  background: rgba(57, 55, 72, 0.22);
+  position: absolute;
+  left: 0;
+  z-index: 6;
+}
+
+.overlay-wrapper {
+  width: 325px;
+  height: 500px;
+  background: var(--clr-white);
+  position: absolute;
+  top: 0;
+  right: 4.5rem;
+  padding: 2rem 0.5rem;
+}
+.overlay h4 {
+  font-weight: 900;
+  margin-bottom: 2rem;
+}
+.overlay-qty {
+  font-weight: 500;
+}

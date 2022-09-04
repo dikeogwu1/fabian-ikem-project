@@ -1,2 +1,6 @@
 export const ADD_ALL_CATEGORIES = 'add all categories to store'
-
+export const ADD_CURRENCIES = 'add currencies to store'
+export const SWITCH_CURRENCY = 'update currentCurrency'
+export const TOGGLE_CURRENCY_SWITCHER = 'Open or close currency switcher'
+export const TOGGLE_CART_OVERLAY = 'Open or close cart overlay'
+export const CLOSE_SWITCHER = 'Close currency switcher'

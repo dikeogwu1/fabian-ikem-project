@@ -1,12 +1,24 @@
 import { createStore } from 'redux'
 import reducer from './reducer'
 
-const initsialState = {
-  categories: [],
-  amount: 0,
-  total: 0,
+const getLocalStorage = () => {
+  let initsialState = localStorage.getItem('storage')
+  if (initsialState) {
+    return (initsialState = JSON.parse(localStorage.getItem('storage')))
+  } else {
+    return {
+      currencies: [{ label: '', symbol: '' }],
+      currentCurrency: { label: 'USD', symbol: '$' },
+      isOverlayOpen: false,
+      isSwitcherOpen: false,
+      inCartQuantity: 0,
+      cartItems: [],
+      amount: 0,
+      total: 0,
+    }
+  }
 }
 
-const store = createStore(reducer, initsialState)
+const store = createStore(reducer, getLocalStorage())
 
 export default store
