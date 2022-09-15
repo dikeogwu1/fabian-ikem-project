@@ -13,6 +13,7 @@ import store from './Redux/store'
 class App extends Component {
   componentDidMount() {
     queryServer(QUERYS.CURRENCIES, ADD_CURRENCIES)
+    queryServer(QUERYS.CATEGORIES, ADD_ALL_CATEGORIES)
     localStorage.setItem('storage', JSON.stringify(store.getState()))
   }
   componentDidUpdate() {

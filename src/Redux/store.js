@@ -9,10 +9,11 @@ const getLocalStorage = () => {
     return {
       currencies: [{ label: '', symbol: '' }],
       currentCurrency: { label: 'USD', symbol: '$' },
+      cartItems: [],
       isOverlayOpen: false,
       isSwitcherOpen: false,
       inCartQuantity: 0,
-      cartItems: [],
+      categories: [],
       amount: 0,
       total: 0,
     }

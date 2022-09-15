@@ -1,6 +1,68 @@
 import { gql } from 'graphql-request'
 
 const QUERYS = {
+  // **** Query for all categories *****
+  CATEGORIES: gql`
+    {
+      category {
+        products {
+          id
+          name
+          inStock
+          gallery
+          category
+          brand
+          prices {
+            currency {
+              label
+              symbol
+            }
+            amount
+          }
+          attributes {
+            id
+            type
+            name
+            items {
+              value
+              id
+            }
+          }
+        }
+      }
+    }
+  `,
+
+  // **** Query for single category *****
+  CATEGORY: gql`
+    query category($name: CategoryInput!) {
+      category(input: $name) {
+        name
+        products {
+          id
+          name
+          brand
+          inStock
+          prices {
+            amount
+            currency {
+              label
+              symbol
+            }
+          }
+          attributes {
+            type
+            name
+            items {
+              value
+            }
+          }
+          gallery
+        }
+      }
+    }
+  `,
+
   // **** Query for currency label and symbols *****
   CURRENCIES: gql`
     {
@@ -10,89 +72,12 @@ const QUERYS = {
       }
     }
   `,
+
   // **** Query category names for navbar use *****
   CATEGORIES_NAMES: gql`
     {
       categories {
         name
-      }
-    }
-  `,
-  // **** Query for all category *****
-  ALL_CATEGORY: gql`
-    {
-      category {
-        name
-        products {
-          id
-          name
-          brand
-          inStock
-          prices {
-            amount
-            currency {
-              label
-              symbol
-            }
-          }
-          attributes {
-            name
-            type
-          }
-          gallery
-        }
-      }
-    }
-  `,
-  // **** Query for tech category *****
-  TECH_CATEGORY: gql`
-    {
-      category(input: { title: "tech" }) {
-        name
-        products {
-          id
-          name
-          brand
-          inStock
-          prices {
-            amount
-            currency {
-              label
-              symbol
-            }
-          }
-          attributes {
-            name
-            type
-          }
-          gallery
-        }
-      }
-    }
-  `,
-  // **** Query for clothes category *****
-  CLOTHES_CATEGORY: gql`
-    {
-      category(input: { title: "clothes" }) {
-        name
-        products {
-          id
-          name
-          brand
-          inStock
-          prices {
-            amount
-            currency {
-              label
-              symbol
-            }
-          }
-          attributes {
-            name
-            type
-          }
-          gallery
-        }
       }
     }
   `,

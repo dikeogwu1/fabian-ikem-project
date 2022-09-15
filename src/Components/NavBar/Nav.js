@@ -2,16 +2,20 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { request } from 'graphql-request'
 import { NavLink } from 'react-router-dom'
-import icons from '../../Svg-icons/icons'
+import { ChevronDown, ChevronUP, FaCart, FaBars } from '../../Svg-icons/icons'
 import './nav.css'
+// components
 import CartQuantity from './CartQuantity'
 import CurrencySwitch from './CurrencySwitch'
+import CartOverlay from '../CartOverlay/CartOverlay'
+// actions
 import {
+  CALCULATE_CART,
+  CLOSE_CART_OVERLAY,
   CLOSE_SWITCHER,
   TOGGLE_CART_OVERLAY,
   TOGGLE_CURRENCY_SWITCHER,
 } from '../../Redux/action'
-import CartOverlay from '../Cart/CartOverlay'
 // use for query
 import QUERYS from '../../Graphql/queries'
 
@@ -45,13 +49,18 @@ class Nav extends Component {
 
   componentDidMount() {
     this.getCategoryNames(QUERYS.CATEGORIES_NAMES)
+    this.props.dispatch({ type: CLOSE_SWITCHER })
+    this.props.dispatch({ type: CLOSE_CART_OVERLAY })
+    this.props.dispatch({ type: CALCULATE_CART })
   }
+
   render() {
     const { currentCurrency, isSwitcherOpen, isOverlayOpen, dispatch } =
       this.props
     if (this.state.categoryNames.length <= 0) {
-      return <h4>fetch data...</h4>
+      return <h2>Loading...</h2>
     }
+
     return (
       <>
         <header
@@ -96,7 +105,7 @@ class Nav extends Component {
                 onClick={() => dispatch({ type: TOGGLE_CURRENCY_SWITCHER })}
               >
                 <h4 className='switch'>{currentCurrency.symbol}</h4>
-                {isSwitcherOpen ? icons.chevronUp : icons.chevronDown}
+                {isSwitcherOpen ? <ChevronUP /> : <ChevronDown />}
               </div>
               {/*End of currency switcher */}
 
@@ -105,14 +114,16 @@ class Nav extends Component {
                 className='cart-wrapper'
                 onClick={() => dispatch({ type: TOGGLE_CART_OVERLAY })}
               >
-                <div>{icons.cart}</div>
+                <div>
+                  <FaCart />
+                </div>
                 <CartQuantity />
               </div>
               {/*End of InCart component */}
 
               {/*Menu icon for mobile view */}
               <div className='bars-wrapper' onClick={this.toggleNavBar}>
-                {icons.solidBars}
+                <FaBars />
               </div>
             </section>
           </nav>
@@ -122,9 +133,6 @@ class Nav extends Component {
           {/* CartOverlay component */}
           {isOverlayOpen && <CartOverlay />}
         </header>
-
-        {/*Empty space under fix navBav */}
-        <div className='empty-space'></div>
       </>
     )
   }

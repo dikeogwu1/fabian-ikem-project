@@ -5,6 +5,8 @@ import QUERYS from '../../Graphql/queries'
 import './categories.css'
 import Category from './Category'
 import { CLOSE_SWITCHER } from '../../Redux/action'
+import { endpoint } from '../../Graphql/request'
+
 class All extends Component {
   constructor(props) {
     super(props)
@@ -13,10 +15,14 @@ class All extends Component {
     }
   }
 
+  variables = {
+    name: { title: 'all' },
+  }
+
   // **** request for all category
-  getCategory = async (query) => {
+  getCategory = async () => {
     try {
-      const response = await request('http://localhost:4000/', query)
+      const response = await request(endpoint, QUERYS.CATEGORY, this.variables)
       const data = await response
       this.setState({ category: data.category })
     } catch (error) {
@@ -25,15 +31,15 @@ class All extends Component {
   }
 
   componentDidMount() {
-    this.getCategory(QUERYS.ALL_CATEGORY)
+    this.getCategory()
   }
 
   render() {
     const { currentCurrency, dispatch } = this.props
     if (this.state.category.length <= 0) {
       return (
-        <main className='categories-wrapper'>
-          <h2>fetching data...</h2>
+        <main className='category-wrapper'>
+          <h2>Loading...</h2>
         </main>
       )
     }
