@@ -51,9 +51,11 @@ const QUERYS = {
             }
           }
           attributes {
+            id
             type
             name
             items {
+              id
               value
             }
           }

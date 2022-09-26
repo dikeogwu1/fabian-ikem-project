@@ -2,10 +2,11 @@ import {
   ADD_ALL_CATEGORIES,
   ADD_CURRENCIES,
   ADD_TO_CART,
-  ADD_VARIANT,
   CALCULATE_CART,
   CLOSE_CART_OVERLAY,
   CLOSE_SWITCHER,
+  DECREASE_QUANTITY,
+  INCREASE_QUANTITY,
   SWITCH_CURRENCY,
   TOGGLE_CART_OVERLAY,
   TOGGLE_CURRENCY_SWITCHER,
@@ -38,7 +39,7 @@ const reducer = (state, action) => {
         return { ...state, currentCurrency: newCurrency, isSwitcherOpen: false }
       }
 
-    // Open or close currency switcher
+    // Logic for Opening / closing currency switcher
     case TOGGLE_CURRENCY_SWITCHER:
       if (state.isSwitcherOpen) {
         localStorage.setItem(
@@ -62,7 +63,7 @@ const reducer = (state, action) => {
       )
       return { ...state, isSwitcherOpen: false }
 
-    // Open or close the cart overlay
+    // Logic for Opening / closing the cart overlay
     case TOGGLE_CART_OVERLAY:
       if (state.isOverlayOpen) {
         localStorage.setItem(
@@ -86,59 +87,107 @@ const reducer = (state, action) => {
       )
       return { ...state, isOverlayOpen: false }
 
-    // Add a product to cart
+    // Logic for Adding product to cart
     case ADD_TO_CART:
-      const products = state.categories.find(
+      let addingVariant
+      let products = state.categories.find(
         (product) => product.id === action.payload.id
       )
-      state.cartItems.push({
-        ...products,
-        quantity: 1,
-        selectedAtt: action.payload.attr,
-      })
+
+      const simillarProduct = state.cartItems.find(
+        (product) => product.id === action.payload.id
+      )
+
+      if (simillarProduct) {
+        for (
+          let index = 0;
+          index < simillarProduct.attributes.length;
+          index++
+        ) {
+          if (
+            simillarProduct.attributes[index].selectedAtt !==
+            action.payload.attr.productAttr[index].selectedAtt
+          ) {
+            addingVariant = true
+          } else {
+            addingVariant = false
+          }
+        }
+      }
+
+      if (!simillarProduct) {
+        addingVariant = false
+      }
+
+      if (!addingVariant && !simillarProduct) {
+        state.cartItems.push({
+          ...products,
+          attributes: action.payload.attr.productAttr,
+          selectedGallery: action.payload.attr.gallery,
+          productVariant: [],
+          quantity: 1,
+        })
+        localStorage.setItem('storage', JSON.stringify(state))
+        return state
+      }
+
+      if (
+        addingVariant &&
+        simillarProduct &&
+        simillarProduct.productVariant.length < 1
+      ) {
+        state.cartItems.map((product) => {
+          if (product.id === action.payload.id) {
+            product.productVariant.push({
+              ...products,
+              attributes: action.payload.attr.productAttr,
+              selectedGallery: action.payload.attr.gallery,
+              productVariant: [],
+              quantity: 1,
+            })
+          }
+          return product
+        })
+        localStorage.setItem('storage', JSON.stringify(state))
+        return state
+      }
+
+      if (
+        addingVariant &&
+        simillarProduct &&
+        simillarProduct.productVariant.length > 0
+      ) {
+        simillarProduct.productVariant.forEach((item) => {
+          for (let index = 0; index < item.attributes.length; index++) {
+            if (
+              simillarProduct.attributes[index].selectedAtt !==
+                action.payload.attr.productAttr[index].selectedAtt &&
+              item.attributes[index].selectedAtt !==
+                action.payload.attr.productAttr[index].selectedAtt
+            ) {
+              state.cartItems.map((product) => {
+                if (product.id === action.payload.id) {
+                  product.productVariant.push({
+                    ...products,
+                    attributes: action.payload.attr.productAttr,
+                    selectedGallery: action.payload.attr.gallery,
+                    productVariant: [],
+                    quantity: 1,
+                  })
+                }
+                return product
+              })
+              localStorage.setItem('storage', JSON.stringify(state))
+              return state
+            }
+          }
+        })
+      }
+
       localStorage.setItem('storage', JSON.stringify(state))
       return state
 
-    // Add a product to cart as product variant
-    case ADD_VARIANT:
-      const variant = state.categories.find(
-        (product) => product.id === action.payload.id
-      )
-
-      const addVariant = state.cartItems.map((items) => {
-        if (items.id === action.payload.id && !items.productVariant) {
-          console.log(items.productVariant)
-          return {
-            ...items,
-            productVariant: [
-              { ...variant, quantity: 1, selectedAtt: action.payload.attr },
-            ],
-          }
-        }
-        if (
-          items.id === action.payload.id &&
-          items.productVariant &&
-          items.productVariant.selectedAtt.productAttr !==
-            action.payload.attr.productAttr
-        ) {
-          console.log(items.productVariant)
-          return items.productVariant.push({
-            ...variant,
-            quantity: 1,
-            selectedAtt: action.payload.attr,
-          })
-        }
-
-        return items
-      })
-
-      localStorage.setItem(
-        'storage',
-        JSON.stringify({ ...state, cartItems: addVariant })
-      )
-      return { ...state, cartItems: addVariant }
-
-    // Calculate products in cart
+    // Logic for Calculating products in cart
     case CALCULATE_CART:
       let qty = 0
       let amount = 0
@@ -148,7 +197,7 @@ const reducer = (state, action) => {
             singlePrice.currency.label === state.currentCurrency.label
         )
 
-        if (product.productVariant) {
+        if (product.productVariant.length > 0) {
           product.productVariant.forEach((item) => {
             qty = qty + product.quantity + item.quantity
 
@@ -171,6 +220,107 @@ const reducer = (state, action) => {
         JSON.stringify({ ...state, total: amount, inCartQuantity: qty })
       )
       return { ...state, total: amount, inCartQuantity: qty }
+
+    // Logic for decreasing product quantity
+    case INCREASE_QUANTITY:
+      let isVariant = true
+      let rightProduct = state.cartItems.find(
+        (product) => product.id === action.payload.id
+      )
+
+      for (let index = 0; index < rightProduct.attributes.length; index++) {
+        if (
+          rightProduct.attributes[index].selectedAtt ===
+          action.payload.productAttr[index]
+        ) {
+          isVariant = false
+        }
+      }
+
+      if (rightProduct.attributes.length < 1) {
+        isVariant = false
+      }
+
+      const increaseVariant = rightProduct.productVariant.map((product) => {
+        for (let index = 0; index < product.attributes.length; index++) {
+          if (
+            product.attributes[index].selectedAtt ===
+            action.payload.productAttr[index]
+          ) {
+            return { ...product, quantity: product.quantity + 1 }
+          }
+        }
+        return product
+      })
+
+      const increase = state.cartItems.map((product) => {
+        if (product.id === action.payload.id && !isVariant) {
+          return { ...product, quantity: product.quantity + 1 }
+        }
+        if (product.id === action.payload.id && isVariant) {
+          return { ...product, productVariant: increaseVariant }
+        }
+        return product
+      })
+
+      localStorage.setItem(
+        'storage',
+        JSON.stringify({ ...state, cartItems: increase })
+      )
+      return { ...state, cartItems: increase }
+
+    // Logic for decreasing product quantity
+    case DECREASE_QUANTITY:
+      let isProductVariant = true
+      let findProduct = state.cartItems.find(
+        (product) => product.id === action.payload.id
+      )
+
+      for (let index = 0; index < findProduct.attributes.length; index++) {
+        if (
+          findProduct.attributes[index].selectedAtt ===
+          action.payload.productAttr[index]
+        ) {
+          isProductVariant = false
+        }
+      }
+
+      if (findProduct.attributes.length < 1) {
+        isProductVariant = false
+      }
+
+      const decreaseVariant = findProduct.productVariant.map((product) => {
+        for (let index = 0; index < product.attributes.length; index++) {
+          if (
+            product.attributes[index].selectedAtt ===
+              action.payload.productAttr[index] &&
+            product.quantity !== 1
+          ) {
+            return { ...product, quantity: product.quantity - 1 }
+          }
+        }
+        return product
+      })
+
+      const decrease = state.cartItems.map((product) => {
+        if (
+          product.id === action.payload.id &&
+          !isProductVariant &&
+          product.quantity !== 1
+        ) {
+          return { ...product, quantity: product.quantity - 1 }
+        }
+        if (product.id === action.payload.id && isProductVariant) {
+          return { ...product, productVariant: decreaseVariant }
+        }
+        return product
+      })
+
+      localStorage.setItem(
+        'storage',
+        JSON.stringify({ ...state, cartItems: decrease })
+      )
+      return { ...state, cartItems: decrease }
 
     // Always return state
     default:

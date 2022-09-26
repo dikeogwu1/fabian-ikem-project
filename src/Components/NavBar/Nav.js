@@ -5,7 +5,7 @@ import { NavLink } from 'react-router-dom'
 import { ChevronDown, ChevronUP, FaCart, FaBars } from '../../Svg-icons/icons'
 import './nav.css'
 // components
-import CartQuantity from './CartQuantity'
+import CartQuantityBage from './CartQuantityBage'
 import CurrencySwitch from './CurrencySwitch'
 import CartOverlay from '../CartOverlay/CartOverlay'
 // actions
@@ -85,7 +85,7 @@ class Nav extends Component {
                     <li key={index}>
                       <NavLink
                         className='nav-link'
-                        to={category.name === 'all' ? '/' : category.name}
+                        to={category.name === 'all' ? '/' : `/${category.name}`}
                       >
                         {category.name}
                       </NavLink>
@@ -117,7 +117,7 @@ class Nav extends Component {
                 <div>
                   <FaCart />
                 </div>
-                <CartQuantity />
+                <CartQuantityBage />
               </div>
               {/*End of InCart component */}
 

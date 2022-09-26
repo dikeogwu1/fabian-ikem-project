@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { CALCULATE_CART } from '../../Redux/action'
 import './cartOverlay.css'
 import OverlayItems from './OverlayItems'
+import { Link } from 'react-router-dom'
 
 class CartOverlay extends Component {
   constructor(props) {
@@ -80,7 +81,10 @@ class CartOverlay extends Component {
               </h4>
             </article>
             <article className='overlay-checkout-btns'>
-              <button>view bag</button>
+              <Link to='cart'>
+                <button>view bag</button>
+              </Link>
+
               <button id='overlay-checkout'>Checkout</button>
             </article>
           </div>

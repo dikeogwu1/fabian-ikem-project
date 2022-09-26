@@ -1,13 +1,31 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { DECREASE_QUANTITY, INCREASE_QUANTITY } from '../../Redux/action'
-import { SolidMinus, SolidPlus } from '../../Svg-icons/icons'
+import {
+  ChevronLeft,
+  ChevronRight,
+  SolidMinus,
+  SolidPlus,
+} from '../../Svg-icons/icons'
 
-class OverlayItems extends Component {
+class CartItem extends Component {
   constructor(props) {
     super(props)
     this.state = {
       count: 0,
+    }
+  }
+
+  forwardImage = () => {
+    this.setState({ count: this.state.count + 1 })
+    if (this.state.count === this.props.item.gallery.length - 1) {
+      this.setState({ count: 0 })
+    }
+  }
+  backwardImage = () => {
+    this.setState({ count: this.state.count - 1 })
+    if (this.state.count <= 0) {
+      this.setState({ count: this.props.item.gallery.length - 1 })
     }
   }
 
@@ -31,28 +49,28 @@ class OverlayItems extends Component {
   }
 
   render() {
-    const { item, currencyType } = this.props
+    const { item, currencyType, dispatch } = this.props
+
     return (
-      <article className='overlay-items'>
-        <div className='overlay-items-box'>
-          <h4>{item.brand}</h4>
-          <h4>{item.name}</h4>
-          <p className='overlay-item-price'>
+      <article className='cart-items'>
+        <div className='cart-items-box'>
+          <h4 className='cart-brand-name'>{item.brand}</h4>
+          <h4 className='cart-prd-name'>{item.name}</h4>
+          <p className='cart-item-price'>
             {currencyType.currency.symbol} <span>{currencyType.amount}</span>
           </p>
-          <div className='overlay-item-attributes'>
+          <div className='cart-item-attributes'>
             {item.attributes.length > 0 &&
               item.attributes.map((attribute) => {
                 // swatch attribute
                 if (attribute.type === 'swatch') {
                   return (
                     <div key={attribute.id}>
-                      <p className='overlay-item-size'>{attribute.name}</p>
+                      <p className='cart-item-size'>{attribute.name}</p>
                       {attribute.items.map((singleItem) => {
-                        console.log(singleItem)
                         let activeColor = 'overlay-attr-color'
                         if (singleItem.value === attribute.selectedAtt) {
-                          activeColor = 'overlay-attr-color activeColor'
+                          activeColor = 'cart-attr-color activeColor'
                         }
                         return (
                           <button
@@ -72,12 +90,12 @@ class OverlayItems extends Component {
                 }
                 return (
                   <div key={attribute.id}>
-                    <p className='overlay-item-size'>{attribute.name}</p>
+                    <p className='cart-item-size'>{attribute.name}</p>
                     {attribute.items.map((singleItem) => {
                       // backgroudColor logic for selected attribute
-                      let attrStyle = 'overlay-attr-btn'
+                      let attrStyle = 'cart-attr-btn'
                       if (singleItem.value === attribute.selectedAtt) {
-                        attrStyle = 'overlay-attr-btn active-attribute'
+                        attrStyle = 'cart-attr-btn active-attribute'
                       }
                       return (
                         <button className={attrStyle} key={singleItem.id}>
@@ -90,7 +108,7 @@ class OverlayItems extends Component {
               })}
           </div>
         </div>
-        <div className='overlay-btns-wrapper'>
+        <div className='cart-btns-wrapper'>
           <button onClick={this.increaseQuantity}>
             <SolidPlus />
           </button>
@@ -99,16 +117,34 @@ class OverlayItems extends Component {
             <SolidMinus />
           </button>
         </div>
-        <div className='overlay-img-wrapper'>
-          <img src={item.gallery[item.selectedGallery]} alt={item.name} />
+        <div className='cart-img-container'>
+          {item.gallery.map((single, index) => {
+            let imageSlide = 'next-slide'
+            if (index === this.state.count) {
+              imageSlide = 'active-slide'
+            }
+            if (index === this.state.count - 1) {
+              imageSlide = 'prev-slide'
+            }
+            return (
+              <div className={imageSlide} key={index}>
+                <img src={single} alt={item.name} />
+              </div>
+            )
+          })}
+          {item.gallery.length > 1 && (
+            <article className='cart-btn-wrapper'>
+              <button onClick={this.backwardImage}>{<ChevronLeft />}</button>
+              <button onClick={this.forwardImage}>{<ChevronRight />}</button>
+            </article>
+          )}
         </div>
       </article>
     )
   }
 }
-
 const mapDispatchToProps = (dispatch) => {
   return { dispatch: dispatch }
 }
 
-export default connect(null, mapDispatchToProps)(OverlayItems)
+export default connect(null, mapDispatchToProps)(CartItem)

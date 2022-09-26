@@ -38,7 +38,7 @@ class All extends Component {
     const { currentCurrency, dispatch } = this.props
     if (this.state.category.length <= 0) {
       return (
-        <main className='category-wrapper'>
+        <main className='category-loading'>
           <h2>Loading...</h2>
         </main>
       )
