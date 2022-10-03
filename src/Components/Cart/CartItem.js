@@ -52,7 +52,7 @@ class CartItem extends Component {
     const { item, currencyType, dispatch } = this.props
 
     return (
-      <article className='cart-items'>
+      <article className='cart-items' key={item.id}>
         <div className='cart-items-box'>
           <h4 className='cart-brand-name'>{item.brand}</h4>
           <h4 className='cart-prd-name'>{item.name}</h4>

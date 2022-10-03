@@ -22,10 +22,15 @@ class Category extends Component {
           })
         : []
 
+    const productAttr2 =
+      product.attributes.length > 0
+        ? product.attributes.map((singleAtt) => singleAtt.items[gallery].value)
+        : ['']
+
     dispatch({
       type: ADD_TO_CART,
       CALCULATE_CART,
-      payload: { id: product.id, attr: { productAttr, gallery } },
+      payload: { id: product.id, attr: { productAttr, gallery: productAttr2 } },
     })
     dispatch({ type: CALCULATE_CART })
   }
@@ -33,25 +38,27 @@ class Category extends Component {
   render() {
     const { product, currencyType, gallery, cartItems, dispatch } = this.props
     return (
-      <Link to={`../product/${product.id}`} className='category-product'>
-        <div>
-          <img src={product.gallery[gallery]} alt={product.name} />
-          <p className='in-stock'>{`${
-            product.inStock ? '' : 'out of stock'
-          }`}</p>
-        </div>
-        <h4 className='category-brand'>
-          {product.brand} <span>{product.name}</span>
-        </h4>
-        <p>
-          {currencyType.currency.symbol} <span>{currencyType.amount}</span>
-        </p>
+      <div className='category-product'>
+        <Link to={`../product/${product.id}`}>
+          <div>
+            <img src={product.gallery[gallery]} alt={product.name} />
+            <p className='in-stock'>{`${
+              product.inStock ? '' : 'out of stock'
+            }`}</p>
+          </div>
+          <h4 className='category-brand'>
+            {product.brand} <span>{product.name}</span>
+          </h4>
+          <p>
+            {currencyType.currency.symbol} <span>{currencyType.amount}</span>
+          </p>
+        </Link>
         {product.inStock && (
           <button className='add-product' onClick={this.handleAddToCart}>
             <ToCart />
           </button>
         )}
-      </Link>
+      </div>
     )
   }
 }

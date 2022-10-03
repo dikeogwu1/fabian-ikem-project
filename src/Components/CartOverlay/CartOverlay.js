@@ -53,7 +53,7 @@ class CartOverlay extends Component {
                         {item.productVariant.map((item) => {
                           return (
                             <OverlayItems
-                              key={item.id}
+                              key={JSON.stringify(item.selectedGallery)}
                               item={item}
                               currencyType={currencyType}
                             />

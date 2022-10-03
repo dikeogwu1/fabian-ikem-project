@@ -40,9 +40,9 @@ class Cart extends Component {
                       {item.productVariant.map((item) => {
                         return (
                           <CartItem
-                            key={item.id}
                             item={item}
                             currencyType={currencyType}
+                            key={JSON.stringify(item.selectedGallery)}
                           />
                         )
                       })}
@@ -51,7 +51,7 @@ class Cart extends Component {
                   </section>
                 )
               }
-              // cart overlay items without variant
+              // cart items without variant
               return (
                 <section key={item.id}>
                   <CartItem item={item} currencyType={currencyType} />

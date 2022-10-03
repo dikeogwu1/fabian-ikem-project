@@ -64,6 +64,35 @@ const QUERYS = {
       }
     }
   `,
+  // **** Query for single category *****
+  PRODUCT: gql`
+    query productId($id: String!) {
+      product(id: $id) {
+        id
+        name
+        brand
+        description
+        inStock
+        prices {
+          amount
+          currency {
+            label
+            symbol
+          }
+        }
+        attributes {
+          id
+          type
+          name
+          items {
+            id
+            value
+          }
+        }
+        gallery
+      }
+    }
+  `,
 
   // **** Query for currency label and symbols *****
   CURRENCIES: gql`

@@ -19,7 +19,7 @@ class All extends Component {
     name: { title: 'all' },
   }
 
-  // **** request for all category
+  // **** request all category
   getCategory = async () => {
     try {
       const response = await request(endpoint, QUERYS.CATEGORY, this.variables)
@@ -36,7 +36,7 @@ class All extends Component {
 
   render() {
     const { currentCurrency, dispatch } = this.props
-    if (this.state.category.length <= 0) {
+    if (this.state.category.length < 1) {
       return (
         <main className='category-loading'>
           <h2>Loading...</h2>

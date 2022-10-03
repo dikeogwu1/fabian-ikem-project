@@ -100,7 +100,7 @@
   outline: 2px solid #5ece7b;
 }
 
-/* overlay items btn wrapper */
+/* cart items btn wrapper */
 .cart-btns-wrapper {
   display: flex;
   flex-direction: column;
@@ -120,7 +120,7 @@
   margin-bottom: 0;
   font-size: 1.25rem;
 }
-/* overlay items image wrapper */
+/* cart items image wrapper */
 .cart-img-container {
   width: 8.5rem;
   height: 10.75rem;
@@ -180,15 +180,10 @@
 }
 
 @media screen and (min-width: 900px) {
-  .cart-items .cart-items-box {
-    width: 60%;
-  }
-}
-
-/* overlay end */
-
-@media screen and (min-width: 900px) {
   .cart-container {
     margin: 0 6.625rem;
+  }
+  .cart-items .cart-items-box {
+    width: 60%;
   }
 }
