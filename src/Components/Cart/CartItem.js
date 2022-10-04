@@ -62,7 +62,7 @@ class CartItem extends Component {
           <div className='cart-item-attributes'>
             {item.attributes.length > 0 &&
               item.attributes.map((attribute) => {
-                // swatch attribute
+                // CLOSE ATTENTION!!!! ==== swatch attribute
                 if (attribute.type === 'swatch') {
                   return (
                     <div key={attribute.id}>
@@ -85,9 +85,9 @@ class CartItem extends Component {
                     </div>
                   )
                 }
-                {
-                  /* none switch attribute */
-                }
+                // End of switch attributes
+
+                // ATTENTION!!! ==== none switch attributes
                 return (
                   <div key={attribute.id}>
                     <p className='cart-item-size'>{attribute.name}</p>
@@ -108,6 +108,7 @@ class CartItem extends Component {
               })}
           </div>
         </div>
+        {/* Overlay quantity increment & decrement buttons */}
         <div className='cart-btns-wrapper'>
           <button onClick={this.increaseQuantity}>
             <SolidPlus />

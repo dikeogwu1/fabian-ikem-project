@@ -1,3 +1,4 @@
+import { __esModule } from '@testing-library/jest-dom/dist/matchers'
 import {
   ADD_ALL_CATEGORIES,
   ADD_CURRENCIES,
@@ -14,15 +15,15 @@ import {
 
 const reducer = (state, action) => {
   switch (action.type) {
-    // Logic to fetch all categories
+    // ***** LOGIC FOR FETCHING ALL CATEGORIES *****
     case ADD_ALL_CATEGORIES:
       return { ...state, categories: action.payload.category.products }
 
-    // Logic to fetch currency
+    // ***** LOGIC FOR FETCHING CURRENCY *****
     case ADD_CURRENCIES:
       return { ...state, currencies: action.payload.currencies }
 
-    // Logic for switching currency
+    // ***** LOGIC FOR SWITCHING CURRENCY *****
     case SWITCH_CURRENCY:
       if (state.currencies.length > 1) {
         const newCurrency = state.currencies.find(
@@ -39,7 +40,7 @@ const reducer = (state, action) => {
         return { ...state, currentCurrency: newCurrency, isSwitcherOpen: false }
       }
 
-    // Logic for Opening / closing currency switcher
+    // ***** LOGIC FOR OPENING / CLOSING CURRENCY SWITCHER *****
     case TOGGLE_CURRENCY_SWITCHER:
       if (state.isSwitcherOpen) {
         localStorage.setItem(
@@ -55,7 +56,7 @@ const reducer = (state, action) => {
         return { ...state, isOverlayOpen: false, isSwitcherOpen: true }
       }
 
-    // Logic for closing currency switcher
+    // ***** LOGIC FOR CLOSING CURRENCY SWITCHER *****
     case CLOSE_SWITCHER:
       localStorage.setItem(
         'storage',
@@ -63,7 +64,7 @@ const reducer = (state, action) => {
       )
       return { ...state, isSwitcherOpen: false }
 
-    // Logic for Opening / closing the cart overlay
+    // ***** LOGIC FOR OPENING / CLOSING OF CART OVERLAY *****
     case TOGGLE_CART_OVERLAY:
       if (state.isOverlayOpen) {
         localStorage.setItem(
@@ -79,7 +80,7 @@ const reducer = (state, action) => {
         return { ...state, isOverlayOpen: true }
       }
 
-    // Logic for closing cart overlay
+    // ***** LOGIC FOR CLOSING CART OVERLAY *****
     case CLOSE_CART_OVERLAY:
       localStorage.setItem(
         'storage',
@@ -87,7 +88,7 @@ const reducer = (state, action) => {
       )
       return { ...state, isOverlayOpen: false }
 
-    // Logic for Adding product to cart
+    // ***** LOGIC FOR ADDING PRODUCT TO CART *****
     case ADD_TO_CART:
       let addingVariant
       let addingMoreVariant
@@ -142,7 +143,7 @@ const reducer = (state, action) => {
         addingMoreVariant = false
       }
 
-      // adding based on condition
+      // adding product based on conditions
       if (!addingVariant && !simillarProduct && !addingMoreVariant) {
         state.cartItems.push({
           ...products,
@@ -185,7 +186,7 @@ const reducer = (state, action) => {
       localStorage.setItem('storage', JSON.stringify(state))
       return state
 
-    // Logic for Calculating products in cart
+    // ***** LOGIC FOR CALCULATING PRODUCTS IN CART *****
     case CALCULATE_CART:
       let qty = 0
       let amount = 0
@@ -217,7 +218,7 @@ const reducer = (state, action) => {
       )
       return { ...state, total: amount, inCartQuantity: qty }
 
-    // Logic for decreasing product quantity
+    // ***** LOGIC FOR INCREASING PRODUCT QUANTITY *****
     case INCREASE_QUANTITY:
       let isVariant
       let isNotVariant
@@ -264,7 +265,7 @@ const reducer = (state, action) => {
       )
       return { ...state, cartItems: increase }
 
-    // Logic for decreasing product quantity
+    // ***** LOGIC FOR DECREASING PRODUCT QUANTITY *****
     case DECREASE_QUANTITY:
       let isProductVariant = true
       let isNotProductVariant = true
@@ -284,35 +285,66 @@ const reducer = (state, action) => {
         isNotProductVariant = false
       }
 
-      const decreaseVariant = findProduct.productVariant.map((product) => {
-        if (
-          JSON.stringify(product.selectedGallery) ===
-            JSON.stringify(action.payload.productAttr) &&
-          product.quantity !== 1
-        ) {
-          return { ...product, quantity: product.quantity - 1 }
-        }
-        return product
-      })
+      const decreaseVariant = findProduct.productVariant
+        .map((product) => {
+          if (
+            JSON.stringify(product.selectedGallery) ===
+            JSON.stringify(action.payload.productAttr)
+          ) {
+            return { ...product, quantity: product.quantity - 1 }
+          }
+          return product
+        })
+        .filter((single) => {
+          return single.quantity !== 0
+        })
 
-      const decrease = state.cartItems.map((product) => {
-        if (
-          product.id === action.payload.id &&
-          !isProductVariant &&
-          isNotProductVariant &&
-          product.quantity !== 1
-        ) {
-          return { ...product, quantity: product.quantity - 1 }
-        }
-        if (
-          product.id === action.payload.id &&
-          isProductVariant &&
-          !isNotProductVariant
-        ) {
-          return { ...product, productVariant: decreaseVariant }
-        }
-        return product
-      })
+      const decrease = state.cartItems
+        .map((product) => {
+          if (
+            product.id === action.payload.id &&
+            !isProductVariant &&
+            isNotProductVariant &&
+            product.quantity !== 1
+          ) {
+            return { ...product, quantity: product.quantity - 1 }
+          }
+          if (
+            product.id === action.payload.id &&
+            !isProductVariant &&
+            isNotProductVariant &&
+            product.quantity === 1 &&
+            product.productVariant.length < 1
+          ) {
+            return { ...product, quantity: product.quantity - 1 }
+          }
+          if (
+            product.id === action.payload.id &&
+            !isProductVariant &&
+            isNotProductVariant &&
+            product.quantity === 1 &&
+            product.productVariant.length > 0
+          ) {
+            const slicedVariant = product.productVariant.filter(
+              (item, i) => i !== 0
+            )
+            return {
+              ...product.productVariant[0],
+              productVariant: slicedVariant,
+            }
+          }
+          if (
+            product.id === action.payload.id &&
+            isProductVariant &&
+            !isNotProductVariant
+          ) {
+            return { ...product, productVariant: decreaseVariant }
+          }
+          return product
+        })
+        .filter((all) => {
+          return all.quantity !== 0
+        })
 
       localStorage.setItem(
         'storage',
@@ -320,7 +352,7 @@ const reducer = (state, action) => {
       )
       return { ...state, cartItems: decrease }
 
-    // Always return state
+    // ***** ALWAYS RETURN STATE *****
     default:
       return state
   }

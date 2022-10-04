@@ -21,6 +21,14 @@ class Cart extends Component {
   render() {
     const { cartItems, currentCurrency, total, inCartQuantity } = this.props
 
+    if (cartItems.length < 1) {
+      return (
+        <div className='empty-cart-box'>
+          <h1 className='empty-cart'>your bag is empty</h1>
+        </div>
+      )
+    }
+
     return (
       <main>
         <section className='cart-container'>

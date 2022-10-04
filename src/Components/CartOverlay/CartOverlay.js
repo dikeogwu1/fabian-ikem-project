@@ -45,7 +45,7 @@ class CartOverlay extends Component {
                   (item) => item.currency.label === currentCurrency.label
                 )
                 if (item.productVariant) {
-                  // cart overlay items without variant
+                  // Attention!!! cart overlay items without variant
                   return (
                     <section key={item.id}>
                       <OverlayItems item={item} currencyType={currencyType} />
@@ -63,7 +63,7 @@ class CartOverlay extends Component {
                     </section>
                   )
                 }
-                // cart overlay items without variant
+                //Attention!!! cart overlay items without variant
                 return (
                   <OverlayItems
                     key={item.id}
