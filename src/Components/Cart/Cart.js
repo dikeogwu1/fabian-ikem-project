@@ -1,6 +1,10 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { CALCULATE_CART, CLOSE_MINI_CART } from '../../Redux/action'
+import {
+  CALCULATE_CART,
+  CLOSE_MINI_CART,
+  CLOSE_SWITCHER,
+} from '../../Redux/action'
 import { StyledCart, StyledEmpty } from '../../Styles/Cart.styled'
 import CartItem from './CartItem'
 
@@ -19,7 +23,8 @@ class Cart extends Component {
   }
 
   render() {
-    const { cartItems, currentCurrency, total, inCartQuantity } = this.props
+    const { cartItems, currentCurrency, total, inCartQuantity, dispatch } =
+      this.props
 
     if (cartItems.length < 1) {
       return (
@@ -30,7 +35,7 @@ class Cart extends Component {
     }
 
     return (
-      <StyledCart>
+      <StyledCart onClick={() => dispatch({ type: CLOSE_SWITCHER })}>
         <div className='cart-container'>
           <h2 className='title'>Cart</h2>
           <div className='cart-underline'></div>

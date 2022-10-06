@@ -57,7 +57,7 @@ export const StyledCart = styled.main`
 `
 export const StyledEmpty = styled.div`
   width: 100%;
-  height: 100vh;
+  height: 80vh;
   display: grid;
   place-content: center;
 

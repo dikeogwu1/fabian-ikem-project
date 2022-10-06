@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { ADD_TO_CART, CALCULATE_CART } from '../../Redux/action'
+import { CLOSE_SWITCHER } from '../../Redux/action'
 import { StyledDetails } from '../../Styles/Details.styled'
 
 class Details extends Component {
@@ -63,7 +64,7 @@ class Details extends Component {
     )
 
     return (
-      <StyledDetails>
+      <StyledDetails onClick={() => dispatch({ type: CLOSE_SWITCHER })}>
         <h4 className='product-brand'>{item.brand}</h4>
         <h4 className='product-name'>{item.name}</h4>
         <div className='product-item-attributes'>

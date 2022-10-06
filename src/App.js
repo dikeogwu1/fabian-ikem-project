@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import Nav from './Components/NavBar/Nav'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 // components
+import Nav from './Components/NavBar/Nav'
 import All from './Components/Categories/All'
 import Clothes from './Components/Categories/Clothes'
 import Tech from './Components/Categories/Tech'
