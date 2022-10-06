@@ -3,21 +3,25 @@ import { connect } from 'react-redux'
 import { request } from 'graphql-request'
 import { NavLink } from 'react-router-dom'
 import { ChevronDown, ChevronUP, FaCart, FaBars } from '../../Svg-icons/icons'
-import './nav.css'
+import { StyledNav } from '../../Styles/Nav.styled'
+
 // components
 import CartQuantityBage from './CartQuantityBage'
 import CurrencySwitch from './CurrencySwitch'
-import CartOverlay from '../CartOverlay/CartOverlay'
+import MiniCart from '../MiniCart/MiniCart'
+
 // actions
 import {
   CALCULATE_CART,
-  CLOSE_CART_OVERLAY,
+  CLOSE_MINI_CART,
   CLOSE_SWITCHER,
-  TOGGLE_CART_OVERLAY,
+  TOGGLE_MINI_CART,
   TOGGLE_CURRENCY_SWITCHER,
 } from '../../Redux/action'
+
 // use for query
 import QUERYS from '../../Graphql/queries'
+import { endpoint } from '../../Graphql/request'
 
 class Nav extends Component {
   constructor(props) {
@@ -31,7 +35,7 @@ class Nav extends Component {
   // **** request for category names
   getCategoryNames = async (query) => {
     try {
-      const response = await request('http://localhost:4000/', query)
+      const response = await request(endpoint, query)
       const data = await response
       this.setState({ ...this.state, categoryNames: data.categories })
     } catch (error) {
@@ -50,7 +54,7 @@ class Nav extends Component {
   componentDidMount() {
     this.getCategoryNames(QUERYS.CATEGORIES_NAMES)
     this.props.dispatch({ type: CLOSE_SWITCHER })
-    this.props.dispatch({ type: CLOSE_CART_OVERLAY })
+    this.props.dispatch({ type: CLOSE_MINI_CART })
     this.props.dispatch({ type: CALCULATE_CART })
   }
 
@@ -63,8 +67,7 @@ class Nav extends Component {
 
     return (
       <>
-        <header
-          className='nav-contianer'
+        <StyledNav
           onClick={(e) => {
             if (!e.target.classList.contains('switch')) {
               dispatch({ type: CLOSE_SWITCHER })
@@ -112,7 +115,7 @@ class Nav extends Component {
               {/*InCart component */}
               <div
                 className='cart-wrapper'
-                onClick={() => dispatch({ type: TOGGLE_CART_OVERLAY })}
+                onClick={() => dispatch({ type: TOGGLE_MINI_CART })}
               >
                 <div>
                   <FaCart />
@@ -131,8 +134,8 @@ class Nav extends Component {
           {isSwitcherOpen && <CurrencySwitch />}
 
           {/* CartOverlay component */}
-          {isOverlayOpen && <CartOverlay />}
-        </header>
+          {isOverlayOpen && <MiniCart />}
+        </StyledNav>
       </>
     )
   }

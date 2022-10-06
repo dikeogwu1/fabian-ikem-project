@@ -4,7 +4,8 @@ import { endpoint } from '../../Graphql/request'
 import QUERYS from '../../Graphql/queries'
 import { useParams } from 'react-router-dom'
 import Details from './Details'
-import './product.css'
+import { StyledProduct } from '../../Styles/Product.styled'
+import { Loading } from '../../Styles/Loading.styled'
 
 class Product extends Component {
   constructor(props) {
@@ -37,13 +38,13 @@ class Product extends Component {
   render() {
     if (this.state.product.length < 1) {
       return (
-        <main className='product-loading'>
+        <Loading>
           <h2>Loading...</h2>
-        </main>
+        </Loading>
       )
     }
     return (
-      <main>
+      <StyledProduct>
         {this.state.product.map((item) => {
           return (
             <section key={item.id} className='product-container'>
@@ -78,7 +79,7 @@ class Product extends Component {
             </section>
           )
         })}
-      </main>
+      </StyledProduct>
     )
   }
 }

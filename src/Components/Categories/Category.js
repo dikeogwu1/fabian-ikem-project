@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { ADD_TO_CART, ADD_VARIANT, CALCULATE_CART } from '../../Redux/action'
+import { StyledCategory } from '../../Styles/Category.styled'
+import { ADD_TO_CART, CALCULATE_CART } from '../../Redux/action'
 import { ToCart } from '../../Svg-icons/icons'
 
 class Category extends Component {
@@ -38,7 +39,7 @@ class Category extends Component {
   render() {
     const { product, currencyType, gallery, cartItems, dispatch } = this.props
     return (
-      <div className='category-product'>
+      <StyledCategory>
         <Link to={`../product/${product.id}`}>
           <div>
             <img src={product.gallery[gallery]} alt={product.name} />
@@ -58,7 +59,7 @@ class Category extends Component {
             <ToCart />
           </button>
         )}
-      </div>
+      </StyledCategory>
     )
   }
 }

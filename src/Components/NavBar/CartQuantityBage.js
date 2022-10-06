@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { StyledQuantityBage } from '../../Styles/CartQuantityBage.styled'
 
 class CartQuantityBage extends Component {
   render() {
-    return <div className='incart-wrapper'>{this.props.inCartQuantity}</div>
+    return <StyledQuantityBage>{this.props.inCartQuantity}</StyledQuantityBage>
   }
 }
 const mapStateToProps = (state) => {

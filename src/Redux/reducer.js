@@ -4,12 +4,12 @@ import {
   ADD_CURRENCIES,
   ADD_TO_CART,
   CALCULATE_CART,
-  CLOSE_CART_OVERLAY,
+  CLOSE_MINI_CART,
   CLOSE_SWITCHER,
   DECREASE_QUANTITY,
   INCREASE_QUANTITY,
   SWITCH_CURRENCY,
-  TOGGLE_CART_OVERLAY,
+  TOGGLE_MINI_CART,
   TOGGLE_CURRENCY_SWITCHER,
 } from './action'
 
@@ -65,7 +65,7 @@ const reducer = (state, action) => {
       return { ...state, isSwitcherOpen: false }
 
     // ***** LOGIC FOR OPENING / CLOSING OF CART OVERLAY *****
-    case TOGGLE_CART_OVERLAY:
+    case TOGGLE_MINI_CART:
       if (state.isOverlayOpen) {
         localStorage.setItem(
           'storage',
@@ -81,7 +81,7 @@ const reducer = (state, action) => {
       }
 
     // ***** LOGIC FOR CLOSING CART OVERLAY *****
-    case CLOSE_CART_OVERLAY:
+    case CLOSE_MINI_CART:
       localStorage.setItem(
         'storage',
         JSON.stringify({ ...state, isOverlayOpen: false })

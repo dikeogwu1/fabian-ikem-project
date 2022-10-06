@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { CALCULATE_CART, SWITCH_CURRENCY } from '../../Redux/action'
+import { StyledCurrencySwticher } from '../../Styles/CurrencySwitcher.styled'
 
 class CurrencySwitch extends Component {
   render() {
     const { currencies, dispatch } = this.props
     return (
-      <ul className='switcher-wrapper'>
+      <StyledCurrencySwticher>
         {currencies.map((currency, index) => {
           return (
             <li
@@ -22,7 +23,7 @@ class CurrencySwitch extends Component {
             </li>
           )
         })}
-      </ul>
+      </StyledCurrencySwticher>
     )
   }
 }

@@ -64,7 +64,7 @@ const QUERYS = {
       }
     }
   `,
-  // **** Query for single category *****
+  // **** Query for single product *****
   PRODUCT: gql`
     query productId($id: String!) {
       product(id: $id) {

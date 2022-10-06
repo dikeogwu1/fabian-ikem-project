@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { StyedCartItem } from '../../Styles/CartItem.styled'
 import { DECREASE_QUANTITY, INCREASE_QUANTITY } from '../../Redux/action'
 import {
   ChevronLeft,
@@ -52,7 +53,7 @@ class CartItem extends Component {
     const { item, currencyType, dispatch } = this.props
 
     return (
-      <article className='cart-items' key={item.id}>
+      <StyedCartItem key={item.id}>
         <div className='cart-items-box'>
           <h4 className='cart-brand-name'>{item.brand}</h4>
           <h4 className='cart-prd-name'>{item.name}</h4>
@@ -140,7 +141,7 @@ class CartItem extends Component {
             </article>
           )}
         </div>
-      </article>
+      </StyedCartItem>
     )
   }
 }

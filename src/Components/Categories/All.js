@@ -2,10 +2,11 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { request } from 'graphql-request'
 import QUERYS from '../../Graphql/queries'
-import './categories.css'
 import Category from './Category'
 import { CLOSE_SWITCHER } from '../../Redux/action'
 import { endpoint } from '../../Graphql/request'
+import { StyledCategories } from '../../Styles/Categories.styled'
+import { Loading } from '../../Styles/Loading.styled'
 
 class All extends Component {
   constructor(props) {
@@ -38,14 +39,14 @@ class All extends Component {
     const { currentCurrency, dispatch } = this.props
     if (this.state.category.length < 1) {
       return (
-        <main className='category-loading'>
+        <Loading className='category-loading'>
           <h2>Loading...</h2>
-        </main>
+        </Loading>
       )
     }
 
     return (
-      <main onClick={() => dispatch({ type: CLOSE_SWITCHER })}>
+      <StyledCategories onClick={() => dispatch({ type: CLOSE_SWITCHER })}>
         <section className='category-wrapper'>
           <h2>{this.state.category.name}</h2>
           <div className='category-product-box'>
@@ -64,7 +65,7 @@ class All extends Component {
             })}
           </div>
         </section>
-      </main>
+      </StyledCategories>
     )
   }
 }

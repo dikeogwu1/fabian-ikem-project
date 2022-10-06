@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { ADD_TO_CART, CALCULATE_CART } from '../../Redux/action'
-import './details.css'
+import { StyledDetails } from '../../Styles/Details.styled'
 
 class Details extends Component {
   constructor(props) {
@@ -63,13 +63,13 @@ class Details extends Component {
     )
 
     return (
-      <div className='product-detail-wrapper'>
+      <StyledDetails>
         <h4 className='product-brand'>{item.brand}</h4>
         <h4 className='product-name'>{item.name}</h4>
         <div className='product-item-attributes'>
           {item.attributes.length > 0 &&
             this.state.currentAttr.map((attribute) => {
-              // swatch attribute
+              //ATTENTION!!! === swatch attributes
               if (attribute.type === 'swatch') {
                 return (
                   <div key={attribute.id}>
@@ -121,10 +121,8 @@ class Details extends Component {
                   </div>
                 )
               }
-
-              {
-                /* none switch attribute */
-              }
+              // End of switch attributes
+              //ATTENTION!!! === none switch attributes
 
               return (
                 <div key={attribute.id}>
@@ -188,7 +186,7 @@ class Details extends Component {
           <button className='unavailable-product'>out of stock</button>
         )}
         <article ref={this.descriptionRef}></article>
-      </div>
+      </StyledDetails>
     )
   }
 }

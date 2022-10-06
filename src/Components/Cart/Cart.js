@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { CALCULATE_CART, CLOSE_CART_OVERLAY } from '../../Redux/action'
-import './cart.css'
+import { CALCULATE_CART, CLOSE_MINI_CART } from '../../Redux/action'
+import { StyledCart, StyledEmpty } from '../../Styles/Cart.styled'
 import CartItem from './CartItem'
 
 class Cart extends Component {
@@ -11,7 +11,7 @@ class Cart extends Component {
 
   componentDidMount() {
     this.props.dispatch({ type: CALCULATE_CART })
-    this.props.dispatch({ type: CLOSE_CART_OVERLAY })
+    this.props.dispatch({ type: CLOSE_MINI_CART })
   }
 
   componentDidUpdate() {
@@ -23,15 +23,15 @@ class Cart extends Component {
 
     if (cartItems.length < 1) {
       return (
-        <div className='empty-cart-box'>
+        <StyledEmpty>
           <h1 className='empty-cart'>your bag is empty</h1>
-        </div>
+        </StyledEmpty>
       )
     }
 
     return (
-      <main>
-        <section className='cart-container'>
+      <StyledCart>
+        <div className='cart-container'>
           <h2 className='title'>Cart</h2>
           <div className='cart-underline'></div>
           <div className='cart-items-wrapper'>
@@ -90,8 +90,8 @@ class Cart extends Component {
             </div>
           </section>
           <button className='place-order'>Order</button>
-        </section>
-      </main>
+        </div>
+      </StyledCart>
     )
   }
 }
